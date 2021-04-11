@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="cfb01fa3-d413-4bb1-9c8f-e85f56bfbb5e" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ComposerSettings">
+    <execution>
+      <executable />
+    </execution>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1pIpVyujGxVbLT1fPfvKvHd0wIx" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/app/requests" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+    <property name="ts.external.directory.path" value="C:\Program Files\JetBrains\PhpStorm 2019.3.4\plugins\JavaScriptLanguage\jsLanguageServicesImpl\external" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Xampp\htdocs\node-rnd\app\requests" />
+      <recent name="D:\Xampp\htdocs\node-rnd\app\common\consoleCMD" />
+      <recent name="D:\Xampp\htdocs\node-rnd\app\middleware" />
+      <recent name="D:\Xampp\htdocs\node-rnd\public\assets\css" />
+      <recent name="D:\Xampp\htdocs\node-rnd\app\common" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\Xampp\htdocs\node-rnd\app\common\defaultAuth\models" />
+      <recent name="D:\Xampp\htdocs\node-rnd\resources\views\layout" />
+      <recent name="D:\Xampp\htdocs\node-rnd\resources\views\auth" />
+      <recent name="D:\Xampp\htdocs\node-rnd\app\common\defaultAuth" />
+      <recent name="D:\Xampp\htdocs\node-rnd\resources\views" />
+    </key>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="cfb01fa3-d413-4bb1-9c8f-e85f56bfbb5e" name="Default Changelist" comment="" />
+      <created>1614880485699</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1614880485699</updated>
+      <workItem from="1614880487913" duration="3935000" />
+      <workItem from="1614922570740" duration="6299000" />
+      <workItem from="1614932586954" duration="3293000" />
+      <workItem from="1614960542514" duration="616000" />
+      <workItem from="1615014291609" duration="606000" />
+      <workItem from="1615045579485" duration="1095000" />
+      <workItem from="1615436598048" duration="9000" />
+      <workItem from="1617077038360" duration="13012000" />
+      <workItem from="1617099438436" duration="1224000" />
+      <workItem from="1617287864486" duration="621000" />
+      <workItem from="1617371057062" duration="9809000" />
+      <workItem from="1617459599432" duration="6604000" />
+      <workItem from="1617548624266" duration="5588000" />
+      <workItem from="1617807485224" duration="2196000" />
+      <workItem from="1617887131632" duration="8012000" />
+      <workItem from="1617941567376" duration="3452000" />
+      <workItem from="1617958191118" duration="10505000" />
+      <workItem from="1617985918434" duration="3211000" />
+      <workItem from="1618030530086" duration="4386000" />
+      <workItem from="1618045480119" duration="6225000" />
+      <workItem from="1618057828272" duration="5927000" />
+      <workItem from="1618120904259" duration="618000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="692" y="330" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1618063431388">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="692" y="330" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1920.1040@0.0.1920.1040" timestamp="1618063431388" />
+    <state x="690" y="270" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1618049553453">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="690" y="270" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1618049553453" />
+    <state x="711" y="389" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1" timestamp="1614932629006">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="711" y="389" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1/0.0.1920.1040@0.0.1920.1040" timestamp="1614932629006" />
+    <state x="740" y="278" key="FileChooserDialogImpl" timestamp="1617470629387">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="740" y="278" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1617470629387" />
+    <state x="463" y="165" key="SettingsEditor" timestamp="1617959217517">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="463" y="165" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1617959217517" />
+    <state x="605" y="247" width="710" height="546" key="find.popup" timestamp="1617469641898">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="605" y="247" width="710" height="546" key="find.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1617469641898" />
+    <state x="616" y="240" key="run.anything.popup" timestamp="1617972521582">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="616" y="240" key="run.anything.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1617972521582" />
+    <state x="616" y="173" width="672" height="676" key="search.everywhere.popup" timestamp="1617466747536">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="616" y="173" width="672" height="676" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1617466747536" />
+  </component>
+</project>

@@ -1,0 +1,11 @@
+.user-info{
+    padding: 10px;
+}
+.user-info img{
+    height: 60px;
+    width: 60px;
+    border-radius: 50%;
+}
+nav{
+    height: 100px;
+}
