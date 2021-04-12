@@ -52,6 +52,9 @@
     
     3. If use request file in route then it will automatically validate you request as you define.
         if validation got error then it redirect back with oldData (reqeust body)
+        User Request file : 
+        router.post('/path',RequestFile,Controller.Function)
+        
         get old data in view :
             <input type="email" name="email" value="<%- oldData.email %>" class="form-control" placeholder="User email">
         
