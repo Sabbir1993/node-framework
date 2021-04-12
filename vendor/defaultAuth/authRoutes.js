@@ -1,12 +1,12 @@
 var express = require('express')
 var router = express.Router()
 const passport = require('passport')
-const {userHasPermission,userHasRole} = require('../../middleware/CheckRolePermission')
-const {Guest} = require('../../middleware/Guest')
-const {Auth} = require('../../middleware/Authenticate')
+const {userHasPermission,userHasRole} = require('../../app/middleware/CheckRolePermission')
+const {Guest} = require('../../app/middleware/Guest')
+const {Auth} = require('../../app/middleware/Authenticate')
 var LoginController = require('./LoginController')
-var RegistrationRequest = require('../../requests/RegistrationRequest')
-var LoginRequest = require('../../requests/LoginRequest')
+var RegistrationRequest = require('../../app/requests/RegistrationRequest')
+var LoginRequest = require('../../app/requests/LoginRequest')
 
 router.post('/login', Guest, LoginRequest, passport.authenticate('local',{
     successRedirect : '/',

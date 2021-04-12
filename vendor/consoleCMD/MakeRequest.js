@@ -27,7 +27,7 @@ class MakeRequest{
     }
 
     requestCode(name, requestName){
-        var Code = `const {catchErrorAndReturn} = require('../common/defaultAuth/helper')
+        var Code = `const {catchErrorAndReturn} = require('../../vendor/helper')
 const { check } = require('express-validator')
 
 module.exports = [

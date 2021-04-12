@@ -25,11 +25,15 @@
     if you want to use it then just go to index.js and uncomment 
     these two line of code.
     
-    // var authRoutes = require('./app/common/defaultAuth/authRoutes')
-    // app.use('/', authRoutes)
+    // const AuthModule = require('./vendor/defaultAuth/AuthModule')
+    // new AuthModule(app)
+    
+    and run 
+        a. npm i passport
+        b. npm i passport-local
     
     2. Default Role permission added on this system.
-    For enable this just go index.js and uncomment these lines as your requirement ..
+    For enable this just go vendor > defaultAuth > AuthModule.js and uncomment these lines as your requirement ..
     
         // res.locals.role = await RolePermissionHelper.role(req.session.passport)
         // res.locals.permission = await RolePermissionHelper.permission(req.session.passport)

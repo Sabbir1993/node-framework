@@ -1,5 +1,5 @@
 const User = require('../models/User')
-const {catchErrorAndReturn} = require('../common/defaultAuth/helper')
+const {catchErrorAndReturn} = require('../../vendor/helper')
 const { check } = require('express-validator')
 
 module.exports = [

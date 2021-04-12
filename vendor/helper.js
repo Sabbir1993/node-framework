@@ -1,6 +1,6 @@
-const User = require('../../models/User')
+const User = require('../app/models/User')
 const { validationResult } = require('express-validator')
-const Log = require('../Log')
+const Log = require('./Log')
 const { v4: uuidv4 } = require('uuid');
 
 exports.uploadfile = (file, path = null) => {
@@ -22,7 +22,7 @@ exports.role = async (val) => {
             path: 'role',
             select: '-_id name'
         }).then(user => {
-            roles = user.role.name
+            roles = user.role?.name
         })
     }
     return roles
@@ -38,7 +38,7 @@ exports.permission = async (val) => {
                 select: '-_id name'
             }
         }).then(user => {
-            if (user.role.permissions.length > 0) {
+            if (user.role?.permissions?.length > 0) {
                 user.role.permissions.map(permission => {
                     permissions.push(permission.name)
                 })

@@ -1,4 +1,4 @@
-const ExecuteConsole = require('./app/common/consoleCMD/ExecuteConsole')
+const ExecuteConsole = require('./vendor/consoleCMD/ExecuteConsole')
 
 new ExecuteConsole()
 

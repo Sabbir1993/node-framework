@@ -1,5 +1,5 @@
-const Helper = require('./helper')
-const User = require('./../../models/User')
+const Helper = require('../helper')
+const User = require('../../app/models/User')
 
 exports.login = async (req, res) => {
     return res.render('auth/login',{layout: false})
