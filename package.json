@@ -1,7 +1,7 @@
 {
-  "name": "node-custom-framework",
+  "name": "node-framework",
   "version": "1.0.0",
-  "description": "Report panel consuming jira api",
+  "description": "Extend Express framework and introduce error handle, multiple language support, default auth using passport, console command support to create controller/model/request, Role permission management etc",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -35,7 +35,7 @@
   "devDependencies": {},
   "repository": {
     "type": "git",
-    "url": "git+https://sabbir1055@bitbucket.org/sabbir1055/node-rnd.git"
+    "url": "https://github.com/Sabbir1993/node-framework"
   },
-  "homepage": "https://bitbucket.org/sabbir1055/node-rnd#readme"
+  "homepage": "https://github.com/Sabbir1993/node-framework/blob/master/README.md"
 }
