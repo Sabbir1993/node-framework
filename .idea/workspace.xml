@@ -2,31 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6989f7a7-7874-439f-969b-9b3d4d1330f3" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/common/ErrorHandler.js" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/ErrorHandler.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/common/Log.js" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/Log.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/common/Response.js" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/Response.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/common/SystemHelper.js" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/SystemHelper.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/common/consoleCMD/ExecuteConsole.js" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/consoleCMD/ExecuteConsole.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/common/consoleCMD/MakeController.js" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/consoleCMD/MakeController.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/common/consoleCMD/MakeModel.js" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/consoleCMD/MakeModel.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/common/consoleCMD/MakeRequest.js" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/consoleCMD/MakeRequest.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/common/defaultAuth/LoginController.js" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/defaultAuth/LoginController.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/common/defaultAuth/authRoutes.js" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/defaultAuth/authRoutes.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/common/defaultAuth/helper.js" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/helper.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/common/defaultAuth/models/Permission.js" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/defaultAuth/models/Permission.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/common/defaultAuth/models/Role.js" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/defaultAuth/models/Role.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/common/hbsCustomHelper.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/requests/LoginRequest.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/requests/LoginRequest.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/requests/RegistrationRequest.js" beforeDir="false" afterPath="$PROJECT_DIR$/app/requests/RegistrationRequest.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/express" beforeDir="false" afterPath="$PROJECT_DIR$/express" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/error/404.hbs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/error/405.hbs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/error/500.hbs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/lang/bn/common.js" beforeDir="false" afterPath="$PROJECT_DIR$/resources/lang/bn/common.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/welcome.ejs" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/welcome.ejs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -69,7 +46,7 @@
       <option name="presentableId" value="Default" />
       <updated>1618144254846</updated>
       <workItem from="1618144257789" duration="930000" />
-      <workItem from="1618232296346" duration="2990000" />
+      <workItem from="1618232296346" duration="3250000" />
     </task>
     <servers />
   </component>

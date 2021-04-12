@@ -15,7 +15,7 @@
     run project : npm start
     
 #### Error Handling :
-    Smoothly handled all errors with compile error and write into log (daily base)
+    Smoothly handled all errors (without compile errors) and write into log (daily base)
     file automatically.
     path : base_dir/logs/*date*_log.log
     
