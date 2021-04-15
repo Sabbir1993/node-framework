@@ -28,20 +28,24 @@ class MakeController{
 
     controllerCode(name, controllerName){
         var Code = `
-exports.index = async (req, res) => { \r\n
-}\r\n
-exports.create = async (req, res) => {\r\n
-}\r\n
-exports.store = async (req, res) => {\r\n
-}\r\n
-exports.view = async (req, res) => {\r\n
-}\r\n
-exports.edit = async (req, res) => {\r\n
-}\r\n
-exports.update = async (req, res) => {\r\n
-}\r\n
-exports.delete = async (req, res) => {\r\n
-}`
+class ${controllerName} {
+     static index = async (req, res) => { \r\n
+    }\r\n
+     static create = async (req, res) => {\r\n
+    }\r\n
+     static store = async (req, res) => {\r\n
+    }\r\n
+     static view = async (req, res) => {\r\n
+    }\r\n
+     static edit = async (req, res) => {\r\n
+    }\r\n
+     static update = async (req, res) => {\r\n
+    }\r\n
+     static delete = async (req, res) => {\r\n
+    }
+}
+module.exports = ${controllerName}
+`
         fs.appendFile(name, Code, function (err) {
             if (err) {
                 console.log('\x1b[41m', err,'\x1b[0m');
