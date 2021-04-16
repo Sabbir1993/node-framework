@@ -42,7 +42,7 @@ app.use(fileUpload({
 }));
 
 // define http server
-var port = (process.env.APP_PORT ?? 3000)
+var port = (process.env.APP_PORT || 3000)
 app.listen(port,function (){
     console.log(`Server stated on port : ${port}`)
 })
