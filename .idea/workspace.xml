@@ -2,11 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6989f7a7-7874-439f-969b-9b3d4d1330f3" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -31,9 +27,12 @@
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="D:/JS/Node/node-framework" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/logs" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Xampp\htdocs\node-rnd\logs" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\Xampp\htdocs\node-rnd\vendor" />
       <recent name="D:\Xampp\htdocs\node-rnd" />
@@ -54,7 +53,7 @@
       <workItem from="1618320724803" duration="919000" />
       <workItem from="1618493261295" duration="7636000" />
       <workItem from="1618551790967" duration="70000" />
-      <workItem from="1618559646173" duration="2028000" />
+      <workItem from="1618559646173" duration="2311000" />
     </task>
     <servers />
   </component>
