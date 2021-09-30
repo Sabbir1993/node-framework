@@ -31,6 +31,7 @@ npm start
 - **[local-storage](https://www.npmjs.com/package/local-storage)**
 - **[connect-flash](https://www.npmjs.com/package/connect-flash)**
 - **[uuid](https://www.npmjs.com/package/uuid)**
+- **[mysql](https://www.npmjs.com/package/mysql)**
 
 ### express
     Fast, unopinionated, minimalist web framework for node.
@@ -186,7 +187,7 @@ router.get('/todos', TodoController.index)
 
 #### Model
     
-    Here includes an object-relational mapper (ORM) that makes it enjoyable to interact with your database. 
+    Here includes an object-relational mapper (ORM) that makes it enjoyable to interact with your Mongo database. 
     When using ORM, each database table has a corresponding "Model" that is used to interact with that table. 
     In addition to retrieving records from the database table, ORM models allow you to insert, update, and 
     delete records from the table as well.To create a model  you may use the make:model NODE CLI command:
@@ -234,6 +235,72 @@ newUser.save(function(err,result){
     }
 })
 ```
+
+#### Mysql Model
+    
+    Here includes an object-relational mapper (ORM) that makes it enjoyable to interact with your Mysql database. 
+    When using ORM, each database table has a corresponding "Model" that is used to interact with that table. 
+    In addition to retrieving records from the database table, ORM models allow dynamic conditions like where,selectRaw,whereIn etc...To create a model  you may use the make:mysqlModel NODE CLI command:
+    
+```shell script
+node express make:mysqlModel User
+```
+    
+```js
+// Model code
+const Model =  require('../../vendor/Orm/Model')
+
+module.exports = class User extends Model{
+
+    constructor(){
+        super() /* provide table name here */
+    }
+}
+
+
+// in controller 
+let data = await new User()
+    .where('key', '=', 'value);
+    .get() /*for get multiple data*/
+
+let data = await new User()
+    .where('key', '=', 'value);
+    .first() /*for get single data*/
+```
+
+#### Migration
+
+    No need to create specific table into database. just type make:migration to create migration file and add all the column name insde migration file.
+    You can also create migration with model with command make:migrationModel
+
+```js
+//migration file code
+const Migration = require("../../vendor/Migration/Migration");
+
+module.exports = class User {
+  up() {
+    var schema = new Migration("user");
+    return schema
+      .id()
+      .string("name", 191).notnull()
+      .number("msisdn", 11).unique().notnull()
+      .end();
+  }
+};
+
+```
+
+```shell script
+node express make:migrationModel User
+```
+
+for run migration run 
+
+```shell script
+node express make:migrate
+```
+this will exwcute all the files inside migration folder and create all the tables respective files.
+
 
 #### Request
     
