@@ -2,6 +2,7 @@ const localStorage = require('local-storage');
 const path = require('path')
 const session = require('express-session')
 const mongoose = require('mongoose')
+const mysql = require('mysql');
 const database = require('../config/database')
 const expressLayouts = require('express-ejs-layouts')
 var bodyParser = require('body-parser')
@@ -16,28 +17,41 @@ module.exports = class SystemHelper {
         this.handleRequestData(app)
 
     }
-    connectToDB(){
-        // connect to db
-        mongoose.connect(database.connection,{useNewUrlParser: true, useUnifiedTopology: true})
-        var db = mongoose.connection
-        db.on('error',(err) => {Log.error(err)} )
-        db.once('open', function (){})
+    connectToDB() {
+         // connect to db
+         try{
+            if(process.env.DB_DRIVER.toLowerCase() === 'mongo'){
+                mongoose.connect(database.mongo,{useNewUrlParser: true, useUnifiedTopology: true})
+                var db = mongoose.connection
+                db.on('error',(err) => {Log.error(err)} )
+                db.once('open', function (){})
+            } else if (process.env.DB_DRIVER.toLowerCase() === 'mysql'){
+                global.mysql = mysql.createConnection(database.mysql);
+                global.mysql.connect();
+            } else {
+                Log.error('Invalid DB Driver')
+                throw 'Invalid DB Driver'
+            }
+        }catch(error){
+            Log.error(error.toString())
+            throw error
+        }
     }
 
-    enableViewEngine(app, express){
+    enableViewEngine(app, express) {
         // define static folder
-        app.use(express.static(path.join(__dirname,'../public')))
+        app.use(express.static(path.join(__dirname, '../public')))
         // define view engine
-        app.set('views', path.join(__dirname,'../resources/views'))
+        app.set('views', path.join(__dirname, '../resources/views'))
         // app.set('view engine', 'hbs');
         app.set('view engine', 'ejs');
         app.use(expressLayouts);
-        app.set('layout', path.join(__dirname,'../resources/views/layout/master.ejs'));
+        app.set('layout', path.join(__dirname, '../resources/views/layout/master.ejs'));
     }
 
-    enableBodyParser(app, express){
+    enableBodyParser(app, express) {
         app.use(express.json());
-        app.use(express.urlencoded({extended: false}))
+        app.use(express.urlencoded({ extended: false }))
 
         // body parser middleware for post data
         app.use(bodyParser.urlencoded({ extended: false }))
@@ -49,10 +63,10 @@ module.exports = class SystemHelper {
             var lang = localStorage.get('lang') ? localStorage.get('lang') : 'en'
             var tempFile = val.split('.')
             var tempOutput = val
-            var transFile = require(path.join(__dirname,`../resources/lang/${lang}/${tempFile[0]}`))
+            var transFile = require(path.join(__dirname, `../resources/lang/${lang}/${tempFile[0]}`))
             var tempIndex = transFile
             tempFile.forEach((element, key) => {
-                if(key > 0) {
+                if (key > 0) {
                     tempIndex = tempIndex[element]
                 }
             })
@@ -60,7 +74,7 @@ module.exports = class SystemHelper {
             return tempIndex ?? tempOutput
         }
         app.locals.numberToBn = (input) => {
-            var englishToBanglaNumber={'0':'০','1':'১','2':'২','3':'৩','4':'৪','5':'৫','6':'৬','7':'৭','8':'৮','9':'৯'};
+            var englishToBanglaNumber = { '0': '০', '1': '১', '2': '২', '3': '৩', '4': '৪', '5': '৫', '6': '৬', '7': '৭', '8': '৮', '9': '৯' };
             for (var x in englishToBanglaNumber) {
                 input = input.toString().replace(new RegExp(x, 'g'), englishToBanglaNumber[x]);
             }
