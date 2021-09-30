@@ -57,7 +57,7 @@ module.exports = class Migration extends SchemaBluePrint{
     }
 
     unique(){
-        this.query = `UNIQUE KEY ${schemaName}_${this.lastColumnName}_unique (${this.lastColumnName})`
+        this.queryOptions = `, UNIQUE KEY ${this.schemaName}_${this.lastColumnName}_unique (${this.lastColumnName})`
         return this
     }
 
@@ -82,16 +82,17 @@ module.exports = class Migration extends SchemaBluePrint{
     }
 
     primarykey(key){
-        this.query = ` PRIMARY KEY (${key})`
+        this.queryOptions = `, PRIMARY KEY (${key})`
         return this
     }
 
     end(){
+        var finalQuery = this.querySting
         if(!this.querySting.includes('PRIMARY KEY')){
-            this.query = ` PRIMARY KEY (${this._lastColumn})) AUTO_INCREMENT=1`
+            finalQuery += `, PRIMARY KEY (${this._lastColumn})) AUTO_INCREMENT=1`
         } else {
-            this.query = `) AUTO_INCREMENT=1`
+            finalQuery += `) AUTO_INCREMENT=1`
         }
-        return this.querySting
+        return finalQuery
     }
 }

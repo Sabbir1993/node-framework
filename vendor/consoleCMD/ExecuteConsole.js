@@ -16,7 +16,6 @@ const availableCommands4 = [
   "make:migrationModel",
 ];
 var argv = process.argv;
-
 module.exports = class ExecuteConsole {
   constructor() {
     this.init();

@@ -49,7 +49,7 @@ class MakeMigrationModel {
 
 module.exports = class ${modelName} extends Model{\r\n
 constructor(){
-    super() /* provide table name here */
+    super('${decamelize(modelName)}') /* provide table name here */
 }
 }\r\n`
 
@@ -64,7 +64,7 @@ constructor(){
   }
 
   migrationCode(name, className) {
-    var Code = `const Migration = require("../Migration");\r\n
+    var Code = `const Migration = require("../../vendor/Migration/Migration");\r\n
     
 module.exports = class ${className} {
     up(){
@@ -80,7 +80,7 @@ module.exports = class ${className} {
         console.log("\x1b[41m", err, "\x1b[0m");
         process.exit();
       }
-      console.log("\x1b[32m", `${tempFilename} model file created`, "\x1b[0m");
+      console.log("\x1b[32m", `${tempFilename} migration file created`, "\x1b[0m");
       process.exit();
     });
   }

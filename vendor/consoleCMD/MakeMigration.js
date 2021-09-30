@@ -34,7 +34,7 @@ class MakeMigration {
   }
 
   migrationCode(name, className) {
-    var Code = `const Migration = require("../Migration");\r\n
+    var Code = `const Migration = require("../../vendor/Migration/Migration");\r\n
 
 module.exports = class ${className} {
     up(){
