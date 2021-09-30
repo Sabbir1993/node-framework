@@ -6,7 +6,8 @@ const mysql = require('mysql');
 const database = require('../config/database')
 const expressLayouts = require('express-ejs-layouts')
 var bodyParser = require('body-parser')
-const Log = require('./Log')
+const Log = require('./Log');
+const mysql = require('mysql')
 
 module.exports = class SystemHelper {
     constructor(app, express) {
@@ -17,9 +18,9 @@ module.exports = class SystemHelper {
         this.handleRequestData(app)
 
     }
-    connectToDB() {
-         // connect to db
-         try{
+    connectToDB(){
+        // connect to db
+        try{
             if(process.env.DB_DRIVER.toLowerCase() === 'mongo'){
                 mongoose.connect(database.mongo,{useNewUrlParser: true, useUnifiedTopology: true})
                 var db = mongoose.connection
