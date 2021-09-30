@@ -5,7 +5,8 @@ const mongoose = require('mongoose')
 const database = require('../config/database')
 const expressLayouts = require('express-ejs-layouts')
 var bodyParser = require('body-parser')
-const Log = require('./Log')
+const Log = require('./Log');
+const mysql = require('mysql')
 
 module.exports = class SystemHelper {
     constructor(app, express) {
@@ -18,10 +19,23 @@ module.exports = class SystemHelper {
     }
     connectToDB(){
         // connect to db
-        mongoose.connect(database.connection,{useNewUrlParser: true, useUnifiedTopology: true})
-        var db = mongoose.connection
-        db.on('error',(err) => {Log.error(err)} )
-        db.once('open', function (){})
+        try{
+            if(process.env.DB_DRIVER.toLowerCase() === 'mongo'){
+                mongoose.connect(database.mongo,{useNewUrlParser: true, useUnifiedTopology: true})
+                var db = mongoose.connection
+                db.on('error',(err) => {Log.error(err)} )
+                db.once('open', function (){})
+            } else if (process.env.DB_DRIVER.toLowerCase() === 'mysql'){
+                global.mysql = mysql.createConnection(database.mysql);
+                global.mysql.connect();
+            } else {
+                Log.error('Invalid DB Driver')
+                throw 'Invalid DB Driver'
+            }
+        }catch(error){
+            Log.error(error.toString())
+            throw error
+        }
     }
 
     enableViewEngine(app, express){
