@@ -44,7 +44,7 @@ class MakeMigrationModel {
     }
   }
 
-  modelCode(name, modelName){
+  modelCode(name, modelName) {
     var Code = `const Model =  require('../../vendor/Orm/Model')
 
 module.exports = class ${modelName} extends Model{\r\n
@@ -54,14 +54,14 @@ constructor(){
 }\r\n`
 
     fs.appendFile(name, Code, function (err) {
-        if (err) {
-            console.log('\x1b[41m', err,'\x1b[0m');
-            process.exit()
-        };
-        console.log('\x1b[32m', `${modelName} model file created`,'\x1b[0m');
+      if (err) {
+        console.log('\x1b[41m', err, '\x1b[0m');
         process.exit()
+      };
+      console.log('\x1b[32m', `${modelName} model file created`, '\x1b[0m');
+      process.exit()
     });
-}
+  }
 
   migrationCode(name, className) {
     var Code = `const Migration = require("../Migration");\r\n
@@ -73,12 +73,14 @@ module.exports = class ${className} {
             .end()
     }
 }`;
+    var tempFilename = name.split('/')
+    tempFilename = tempFilename[tempFilename.length - 1]
     fs.appendFile(name, Code, function (err) {
       if (err) {
         console.log("\x1b[41m", err, "\x1b[0m");
         process.exit();
       }
-      console.log("\x1b[32m", `${name} model file created`, "\x1b[0m");
+      console.log("\x1b[32m", `${tempFilename} model file created`, "\x1b[0m");
       process.exit();
     });
   }

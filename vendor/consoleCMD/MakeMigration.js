@@ -43,12 +43,14 @@ module.exports = class ${className} {
             .end()
     }
 }`;
+  var tempFilename = name.split('/')
+  tempFilename = tempFilename[tempFilename.length -1 ]
     fs.appendFile(name, Code, function (err) {
       if (err) {
         console.log("\x1b[41m", err, "\x1b[0m");
         process.exit();
       }
-      console.log("\x1b[32m", `${name} model file created`, "\x1b[0m");
+      console.log("\x1b[32m", `${tempFilename} model file created`, "\x1b[0m");
       process.exit();
     });
   }
