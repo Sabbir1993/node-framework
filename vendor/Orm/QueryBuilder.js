@@ -60,4 +60,8 @@ module.exports = class QueryBuilder {
   get getQueryString(){
     return this._query
   }
+
+  get schemaName(){
+    return this._name
+  }
 }

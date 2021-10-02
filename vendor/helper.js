@@ -77,7 +77,6 @@ exports.sqlResult = (query) => {
   return new Promise((resolve, reject) => {
     global.mysql.query(query, function (error, results, fields) {
       if (error) {
-        console.error("Error sending action: ", error);
         reject(error);
       }
       resolve(results);
@@ -91,7 +90,6 @@ exports.sqlResultForMigration = (query) => {
   return new Promise((resolve, reject) => {
     mysqli.query(query, function (error, results, fields) {
       if (error) {
-        console.error("Error sending action: ", error);
         reject(error);
       }
       resolve(results);

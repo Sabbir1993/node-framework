@@ -56,8 +56,12 @@ module.exports = class Migration extends SchemaBluePrint{
         return this
     }
 
-    unique(){
-        this.queryOptions = `, UNIQUE KEY ${this.schemaName}_${this.lastColumnName}_unique (${this.lastColumnName})`
+    unique(key = null){
+        if(key){
+            this.queryOptions = `, UNIQUE KEY ${this.schemaName}_${key}_unique (${key})`
+        } else {
+            this.queryOptions = `, UNIQUE KEY ${this.schemaName}_${this.lastColumnName}_unique (${this.lastColumnName})`
+        }
         return this
     }
 

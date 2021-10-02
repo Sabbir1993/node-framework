@@ -1,6 +1,5 @@
 const { sqlResult } = require( "../Helper")
 const QueryBuilder = require( "./QueryBuilder");
-
 module.exports = class Model extends QueryBuilder {
 
   constructor(tableName) {
@@ -118,5 +117,40 @@ module.exports = class Model extends QueryBuilder {
       return element[key]
     })
     return pluckResult
+  }
+
+  async create(data){
+    try{
+      var keys = Object.keys(data)
+      var query = `insert into ${this.schemaName} (`
+      keys.forEach((key,index) => {
+        if(index === (keys.length-1)){
+          query += ` ${key}) values (`
+        }else{
+          query += `${key}, `
+        }
+      })
+      keys.forEach((key,index) => {
+        if(index === (keys.length-1)){
+          if(typeof data[key] === 'string'){
+            query += `'${data[key]}')`
+          } else {
+            query += `${data[key]})`
+          }
+        }else{
+          if(typeof data[key] === 'string'){
+            query += `'${data[key]}', `
+          } else {
+            query += `${data[key]}, `
+          }
+        }
+      })
+      var result = await sqlResult(query)
+      console.log(result);
+      return data;
+    } catch(err){
+      console.log('error in model');
+      return err
+    }
   }
 }
