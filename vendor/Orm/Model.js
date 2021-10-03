@@ -13,20 +13,20 @@ module.exports = class Model extends QueryBuilder {
   }
 
   leftJoin(table, tableKey, parentKey) {
-    this.leftJoinCondition = ` left join ${table} on ${tableKey} = ${parentKey}`;
+    this.leftJoinCondition = ` left join ${global.mysql.escape(table)} on ${global.mysql.escape(tableKey)} = ${global.mysql.escape(parentKey)}`;
     return this
   }
 
   join(table, tableKey, parentKey) {
-    this.joinCondition = ` join ${table} on ${tableKey} = ${parentKey}`;
+    this.joinCondition = ` join ${global.mysql.escape(table)} on ${global.mysql.escape(tableKey)} = ${global.mysql.escape(parentKey)}`;
     return this
   }
 
   where(key, type, value) {
     if (this.getQueryString.includes("where")) {
-      this.whereCondition = `and ${key} ${type} '${value}'`;
+      this.whereCondition = `and ${key} ${type} '${global.mysql.escape(value)}'`;
     } else {
-      this.whereCondition = `where ${key} ${type} '${value}'`;
+      this.whereCondition = `where ${key} ${type} '${global.mysql.escape(value)}'`;
     }
     return this
   }
@@ -50,40 +50,47 @@ module.exports = class Model extends QueryBuilder {
   }
 
   whereIn(key, value) {
-    if (this.getQueryString.includes("where")) {
-      this.whereInCondition = `and ${key} in (${value})`;
+    if (typeof value === 'string') {
+      if (this.getQueryString.includes("where")) {
+        this.whereInCondition = `and ${key} in (${global.mysql.escape(value)})`;
+      } else {
+        this.whereInCondition = `where ${key} in (${global.mysql.escape(value)})`;
+      }
+    } else if (typeof value === 'object' && value.length) {
+      this.whereCondition = `where ${key} in (${value.join()})`
     } else {
-      this.whereInCondition = `where ${key} in (${value})`;
+      var err = new Error('Type must be comma separate string or array')
+      global.next(err)
     }
     return this
   }
 
   whereBetween(key, value) {
     if (this.getQueryString.includes("where")) {
-      this.whereBetweenCondition = `and ${key} between '${value[0]}' and '${value[1]}'`;
+      this.whereBetweenCondition = `and ${key} between '${global.mysql.escape(value[0])}' and '${global.mysql.escape(value[1])}'`;
     } else {
-      this.whereBetweenCondition = `where ${key} between '${value[0]}' and '${value[1]}'`;
+      this.whereBetweenCondition = `where ${key} between '${global.mysql.escape(value[0])}' and '${global.mysql.escape(value[1])}'`;
     }
     return this
   }
 
   groupBy(key) {
-    this.groupByCondition = ` group by ${key}`;
+    this.groupByCondition = ` group by ${global.mysql.escape(key)}`;
     return this
   }
 
   orderBy(key, type) {
-    this.orderByCondition = ` order by ${key} ${type}`;
+    this.orderByCondition = ` order by ${global.mysql.escape(key)} ${global.mysql.escape(type)}`;
     return this
   }
 
   limit(value) {
-    this.limitCondition = ` limit ${value}`
+    this.limitCondition = ` limit ${global.mysql.escape(value)}`
     return this
   }
 
   offset(value) {
-    this.offsetCondition = ` offset ${value}`
+    this.offsetCondition = ` offset ${global.mysql.escape(value)}`
     return this
   }
 
@@ -323,8 +330,8 @@ module.exports = class Model extends QueryBuilder {
     }
   }
 
-  _writeLog(query){
-    if(process.env.QUERY_LOG){
+  _writeLog(query) {
+    if (process.env.QUERY_LOG) {
       Log.info(`SQL Query ===> ${query}`)
     }
   }
