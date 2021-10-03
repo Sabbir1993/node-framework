@@ -10,7 +10,6 @@ if (!fs.existsSync(LogFile)) {
 }
 
 exports.ErrorHandle = (err, req, res, next) => {
-  console.log(err);
   if (err.status !== 200) {
     const logDate = new Date();
     fs.appendFile(

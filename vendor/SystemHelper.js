@@ -96,6 +96,9 @@ module.exports = class SystemHelper {
         app.use(require('connect-flash')());
 
         app.use(async function (req, res, next) {
+            global.next = next
+            global.req = req
+            global.res = res
             var oldReqData = req.flash('oldData');
             var successMessage = req.flash('success');
             var errorMessage = req.flash('error');

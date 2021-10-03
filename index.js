@@ -13,10 +13,7 @@ app.use(fileUpload());
 // Enable auth default module
 // const AuthModule = require('./vendor/defaultAuth/AuthModule')
 // new AuthModule(app)
-if (process.env.NODE_ENV === 'development') {
-    // only use in development
-    app.use(errorhandler())
-  }
+
 // define routes
 var web = require("./routes/web");
 var api = require("./routes/api");
