@@ -1,4 +1,5 @@
-const { sqlResult } = require("../Helper")
+const { sqlResult } = require("../Helper");
+const Log = require("../Log");
 const QueryBuilder = require("./QueryBuilder");
 module.exports = class Model extends QueryBuilder {
 
@@ -21,21 +22,12 @@ module.exports = class Model extends QueryBuilder {
     return this
   }
 
-  where(key, type, value, update = 0) {
-    if (update) {
-      if (this.updateQueryString.includes("where")) {
-        this.whereCondition = { string: `and ${key} ${type} '${value}'`, update: update };
-      } else {
-        this.whereCondition = { string: `where ${key} ${type} '${value}'`, update: update };
-      }
+  where(key, type, value) {
+    if (this.getQueryString.includes("where")) {
+      this.whereCondition = `and ${key} ${type} '${value}'`;
     } else {
-      if (this.getQueryString.includes("where")) {
-        this.whereCondition = { string: `and ${key} ${type} '${value}'`, update: update };
-      } else {
-        this.whereCondition = { string: `where ${key} ${type} '${value}'`, update: update };
-      }
+      this.whereCondition = `where ${key} ${type} '${value}'`;
     }
-
     return this
   }
 
@@ -96,36 +88,63 @@ module.exports = class Model extends QueryBuilder {
   }
 
   async count() {
-    var queryString = this.getQueryString
-    var data = await sqlResult(queryString);
-    return data.length
+    try {
+      var queryString = `${this.selectPrepend} ${this.getQueryString}`
+      this._writeLog(queryString)
+      var data = await sqlResult(queryString);
+      return data.length
+    } catch (err) {
+      global.next(err)
+    }
   }
 
   async all() {
-    var queryString = this.getQueryString
-    return await sqlResult(queryString);
+    try {
+      var queryString = `${this.selectPrepend} ${this.getQueryString}`
+      this._writeLog(queryString)
+      var data = await sqlResult(queryString)
+      return data;
+    } catch (err) {
+      global.next(err)
+    }
   }
 
   async get() {
-    var queryString = this.getQueryString
-    return await sqlResult(queryString);
+    try {
+      var queryString = `${this.selectPrepend} ${this.getQueryString}`
+      this._writeLog(queryString)
+      var data = await sqlResult(queryString)
+      return data;
+    } catch (err) {
+      global.next(err)
+    }
   }
 
   async first() {
-    var queryString = this.getQueryString
-    var data = await sqlResult(queryString);
-    return data.length ? data[0] : null
+    try {
+      var queryString = `${this.selectPrepend} ${this.getQueryString}`
+      this._writeLog(queryString)
+      var data = await sqlResult(queryString);
+      return data.length ? data[0] : null
+    } catch (err) {
+      global.next(err)
+    }
   }
 
   async pluck(key) {
-    this.pluckValue = `${key}`
-    var queryString = this.getQueryString
-    var data = await sqlResult(queryString);
-    var pluckResult = [];
-    pluckResult = await data.map(element => {
-      return element[key]
-    })
-    return pluckResult
+    try {
+      this.pluckValue = `${key}`
+      var queryString = this.getQueryString
+      this._writeLog(queryString)
+      var data = await sqlResult(queryString)
+      var pluckResult = [];
+      pluckResult = await data.map(element => {
+        return element[key]
+      })
+      return pluckResult
+    } catch (err) {
+      global.next(err)
+    }
   }
 
   async create(data) {
@@ -154,7 +173,8 @@ module.exports = class Model extends QueryBuilder {
           }
         }
       })
-      var result = await sqlResult(query)
+      this._writeLog(query)
+      await sqlResult(query)
       return data;
     } catch (err) {
       return global.next(err)
@@ -196,6 +216,7 @@ module.exports = class Model extends QueryBuilder {
           query += `, (`
         }
       })
+      this._writeLog(query)
       await sqlResult(query)
       return datas;
     } catch (err) {
@@ -204,11 +225,7 @@ module.exports = class Model extends QueryBuilder {
   }
 
   async update(data) {
-    if (typeof data !== 'object' || data.length || !data.id) {
-      var err = new Error('Data type must be object and id attribute must be exist');
-      return global.next(err)
-    }
-    try{
+    try {
       var keys = Object.keys(data)
       await keys.forEach((key, index) => {
         if (index === (keys.length - 1)) {
@@ -225,9 +242,13 @@ module.exports = class Model extends QueryBuilder {
           }
         }
       })
-      this.where('id', '=', data.id, 1)
-      await sqlResult(this.updateQueryString)
-    }catch(err){
+      if (data.id) {
+        this.where('id', '=', data.id)
+      }
+      var updateQuery = `${this.updatePrepend} ${this.updateQueryString} ${this.getQueryString}`
+      this._writeLog(updateQuery)
+      await sqlResult(updateQuery)
+    } catch (err) {
       global.next(err)
     }
   }
@@ -267,7 +288,10 @@ module.exports = class Model extends QueryBuilder {
         await skeys.forEach((key) => {
           this.where(key, '=', sData[key], 1)
         })
-        await sqlResult(this.updateQueryString);
+
+        var updateQuery = `${this.updatePrepend} ${this.updateQueryString} ${this.getQueryString}`
+        this._writeLog(updateQuery)
+        await sqlResult(updateQuery);
       } else {
         this.create(eData)
       }
@@ -296,6 +320,12 @@ module.exports = class Model extends QueryBuilder {
       }
     } catch (err) {
       global.next(err)
+    }
+  }
+
+  _writeLog(query){
+    if(process.env.QUERY_LOG){
+      Log.info(`SQL Query ===> ${query}`)
     }
   }
 }

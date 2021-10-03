@@ -99,6 +99,10 @@ const myPlaintextPassword = 's0/\/\P4$$w0rD';
 bcrypt.hash(myPlaintextPassword, saltRounds, function(err, hash) {
     // Store hash in your password DB.
 });
+
+// Or
+
+password = bcrypt.hashSync('12345678', 10);
 ```
 
 ### express-fileupload
@@ -266,6 +270,21 @@ let data = await new User()
 let data = await new User()
     .where('key', '=', 'value);
     .first() /*for get single data*/
+
+// Model insert and update
+let user = new User().where().update({
+
+})
+
+new user().updateOrCreate({
+    // condition that check
+},{
+    // data that will insert or update
+})
+
+new user().firstOrCreate({
+    // data that will insert or fetch
+})
 ```
 
 #### Migration

@@ -1,12 +1,14 @@
 module.exports = class QueryBuilder {
   constructor(tableName) {
     this._name = tableName;
-    this._query = `select * from ${tableName}`;
-    this._updateQuery = `update ${tableName} set `
+    this._query = '';
+    this._updateQuery = '';
+    this._selectPrepend = `select * from ${this._name}`
+    this._updatePrepend = `update ${this._name} set`
   }
 
   set selectItems(query){
-    this._query = this._query.replace('*', query)
+    this._selectPrepend = this._selectPrepend.replace('*', query)
   }
 
   set leftJoinCondition(query){
@@ -18,12 +20,7 @@ module.exports = class QueryBuilder {
   }
 
   set whereCondition(query){
-    if(query.update){
-      this._updateQuery = `${this._updateQuery} ${query.string}`
-    } else {
-      this._query = `${this._query} ${query.string}`
-    }
-    
+      this._query = `${this._query} ${query}` 
   }
 
   set whereNotNullCondition(query){
@@ -59,7 +56,7 @@ module.exports = class QueryBuilder {
   }
 
   set pluckValue(query){
-    var tempQuery = `select ${query} from (${this._query}) as temporaryobservationtable`
+    var tempQuery = `select ${query} from (${this.selectPrepend} ${this._query}) as temporaryobservationtable`
     this._query = tempQuery
   }
 
@@ -77,5 +74,13 @@ module.exports = class QueryBuilder {
 
   get updateQueryString(){
     return this._updateQuery
+  }
+  
+  get selectPrepend(){
+    return this._selectPrepend
+  }
+
+  get updatePrepend(){
+    return this._updatePrepend
   }
 }
