@@ -2,6 +2,7 @@ module.exports = class QueryBuilder {
   constructor(tableName) {
     this._name = tableName;
     this._query = `select * from ${tableName}`;
+    this._updateQuery = `update ${tableName} set `
   }
 
   set selectItems(query){
@@ -17,7 +18,12 @@ module.exports = class QueryBuilder {
   }
 
   set whereCondition(query){
-    this._query = `${this._query} ${query}`
+    if(query.update){
+      this._updateQuery = `${this._updateQuery} ${query.string}`
+    } else {
+      this._query = `${this._query} ${query.string}`
+    }
+    
   }
 
   set whereNotNullCondition(query){
@@ -57,11 +63,19 @@ module.exports = class QueryBuilder {
     this._query = tempQuery
   }
 
+  set updateQuery(query){
+    this._updateQuery +=  query
+  }
+  
   get getQueryString(){
     return this._query
   }
 
   get schemaName(){
     return this._name
+  }
+
+  get updateQueryString(){
+    return this._updateQuery
   }
 }

@@ -9,19 +9,13 @@ router.get('/',async (req, res, next) => {
 
    password = bcrypt.hashSync('12345678', 10);
 
-   var user = await new User().insert([{
-      'name': 'Dipto1',
+   var user = await new User().firstOrCreate({
+      'id': 64,
+      'name': 'Dipto chowdury',
       'msisdn': '01684815189',
-      'email': 'dipto1@gmail.com',
-      'password': password
-   },
-   {
-      'name': 'sabbir',
-      'msisdn': '01949801981',
-      'email': 'sabbir@gmail.com',
-      'password': password
-   }])
-   // console.log(user);
+      'email': 'dipto.chowdury1@gmail.com'
+   })
+   console.log(user);
    return res.render('welcome')
 })
 

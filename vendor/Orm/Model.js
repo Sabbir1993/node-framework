@@ -21,12 +21,21 @@ module.exports = class Model extends QueryBuilder {
     return this
   }
 
-  where(key, type, value) {
-    if (this.getQueryString.includes("where")) {
-      this.whereCondition = `and ${key} ${type} '${value}'`;
+  where(key, type, value, update = 0) {
+    if (update) {
+      if (this.updateQueryString.includes("where")) {
+        this.whereCondition = { string: `and ${key} ${type} '${value}'`, update: update };
+      } else {
+        this.whereCondition = { string: `where ${key} ${type} '${value}'`, update: update };
+      }
     } else {
-      this.whereCondition = `where ${key} ${type} '${value}'`;
+      if (this.getQueryString.includes("where")) {
+        this.whereCondition = { string: `and ${key} ${type} '${value}'`, update: update };
+      } else {
+        this.whereCondition = { string: `where ${key} ${type} '${value}'`, update: update };
+      }
     }
+
     return this
   }
 
@@ -151,7 +160,7 @@ module.exports = class Model extends QueryBuilder {
       return global.next(err)
     }
   }
-  
+
   async insert(datas) {
     if (!datas.length) {
       var err = new Error('Data type must be array');
@@ -191,6 +200,102 @@ module.exports = class Model extends QueryBuilder {
       return datas;
     } catch (err) {
       return global.next(err)
+    }
+  }
+
+  async update(data) {
+    if (typeof data !== 'object' || data.length || !data.id) {
+      var err = new Error('Data type must be object and id attribute must be exist');
+      return global.next(err)
+    }
+    try{
+      var keys = Object.keys(data)
+      await keys.forEach((key, index) => {
+        if (index === (keys.length - 1)) {
+          if (typeof data[key] === 'string') {
+            this.updateQuery = `${key} = '${data[key]}'`
+          } else {
+            this.updateQuery = `${key} = ${data[key]} `
+          }
+        } else {
+          if (typeof data[key] === 'string') {
+            this.updateQuery = `${key} = '${data[key]}',`
+          } else {
+            this.updateQuery = `${key} = ${data[key]}, `
+          }
+        }
+      })
+      this.where('id', '=', data.id, 1)
+      await sqlResult(this.updateQueryString)
+    }catch(err){
+      global.next(err)
+    }
+  }
+
+  async updateOrCreate(sData, eData) {
+    try {
+      var existedData = null
+      var skeys = null
+      var eKeys = null
+      if ((typeof sData === 'object') && !sData.length) {
+        skeys = Object.keys(sData)
+        await skeys.forEach((key) => {
+          this.where(key, '=', sData[key])
+        })
+        existedData = await this.first()
+      } else {
+        var err = new Error('Data type must be object');
+        global.next(err)
+      }
+      if (existedData) {
+        eKeys = Object.keys(eData)
+        await eKeys.forEach((key, index) => {
+          if (index === (eKeys.length - 1)) {
+            if (typeof eData[key] === 'string') {
+              this.updateQuery = `${key} = '${eData[key]}'`
+            } else {
+              this.updateQuery = `${key} = ${eData[key]} `
+            }
+          } else {
+            if (typeof eData[key] === 'string') {
+              this.updateQuery = `${key} = '${eData[key]}',`
+            } else {
+              this.updateQuery = `${key} = ${eData[key]}, `
+            }
+          }
+        })
+        await skeys.forEach((key) => {
+          this.where(key, '=', sData[key], 1)
+        })
+        await sqlResult(this.updateQueryString);
+      } else {
+        this.create(eData)
+      }
+    } catch (err) {
+      global.next(err)
+    }
+  }
+
+  async firstOrCreate(data) {
+    try {
+      var existedData = null
+      if ((typeof data === 'object') && !data.length) {
+        var keys = Object.keys(data)
+        await keys.forEach((key) => {
+          this.where(key, '=', data[key])
+        })
+        existedData = await this.first()
+      } else {
+        var err = new Error('Data type must be object');
+        global.next(err)
+      }
+      if (existedData) {
+        return existedData;
+      } else {
+        this.create(eData)
+      }
+    } catch (err) {
+      global.next(err)
     }
   }
 }
