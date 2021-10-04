@@ -74,11 +74,15 @@ exports.catchErrorAndReturn = (req, res, next) => {
 };
 
 exports.sqlResult = (query) => {
+  var mysqli = mysql.createConnection(database.mysql);
+  mysqli.connect();
   return new Promise((resolve, reject) => {
-    global.mysql.query(query, function (error, results, fields) {
+    mysqli.query(query, function (error, results, fields) {
       if (error) {
+        mysqli.end();
         reject(error);
       }
+      mysqli.end();
       resolve(results);
     });
   });
@@ -90,10 +94,11 @@ exports.sqlResultForMigration = (query) => {
   return new Promise((resolve, reject) => {
     mysqli.query(query, function (error, results, fields) {
       if (error) {
+        mysqli.end();
         reject(error);
       }
-      resolve(results);
       mysqli.end();
+      resolve(results);
     });
   });
 };
