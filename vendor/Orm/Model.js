@@ -77,12 +77,12 @@ module.exports = class Model {
   }
 
   groupBy(key) {
-    this.#queryBuilder.groupByCondition = ` group by ${mysql.escape(key)}`;
+    this.#queryBuilder.groupByCondition = ` group by ${key}`;
     return this
   }
 
   orderBy(key, type) {
-    this.#queryBuilder.orderByCondition = ` order by ${mysql.escape(key)} ${mysql.escape(type)}`;
+    this.#queryBuilder.orderByCondition = ` order by ${key} ${mysql.escape(type)}`;
     return this
   }
 
