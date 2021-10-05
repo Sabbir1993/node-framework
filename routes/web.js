@@ -1,8 +1,5 @@
 var express = require('express')
 var localStorage = require('local-storage');
-const User = require('../app/models/User');
-const TestArnob = require('../app/models/TestArnob')
-const bcrypt = require('bcrypt');
 
 var router = express.Router()
 router.get('/',async (req, res, next) => {
