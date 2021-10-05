@@ -8,7 +8,8 @@ module.exports = class QueryBuilder {
   }
 
   set selectItems(query){
-    this._selectPrepend = this._selectPrepend.replace('*', query)
+    console.log(query);
+    // this._selectPrepend = this._selectPrepend.replace('*', query)
   }
 
   set leftJoinCondition(query){

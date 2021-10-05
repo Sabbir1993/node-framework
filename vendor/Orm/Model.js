@@ -1,63 +1,65 @@
 const { sqlResult } = require("../Helper");
 const Log = require("../Log");
 const QueryBuilder = require("./QueryBuilder");
-module.exports = class Model extends QueryBuilder {
-
+const mysql = require('mysql')
+module.exports = class Model {
+  #queryBuilder
   constructor(tableName) {
-    super(tableName)
+    // super(tableName)
+    this.#queryBuilder = new QueryBuilder(tableName)
   }
 
   selectRaw(string) {
-    this.selectItems = string
+    this.#queryBuilder.selectItems = string
     return this
   }
 
   leftJoin(table, tableKey, parentKey) {
-    this.leftJoinCondition = ` left join ${global.mysql.escape(table)} on ${global.mysql.escape(tableKey)} = ${global.mysql.escape(parentKey)}`;
+    this.#queryBuilder.leftJoinCondition = ` left join ${table} on ${tableKey} = ${parentKey}`;
     return this
   }
 
   join(table, tableKey, parentKey) {
-    this.joinCondition = ` join ${global.mysql.escape(table)} on ${global.mysql.escape(tableKey)} = ${global.mysql.escape(parentKey)}`;
+    this.#queryBuilder.joinCondition = ` join ${table} on ${tableKey} = ${parentKey}`;
     return this
   }
 
   where(key, type, value) {
-    if (this.getQueryString.includes("where")) {
-      this.whereCondition = `and ${key} ${type} '${global.mysql.escape(value)}'`;
+    if (this.#queryBuilder.getQueryString.includes("where")) {
+      this.#queryBuilder.whereCondition = `and ${key} ${type} '${mysql.escape(value)}'`;
     } else {
-      this.whereCondition = `where ${key} ${type} '${global.mysql.escape(value)}'`;
+      this.#queryBuilder.whereCondition = `where ${key} ${type} '${mysql.escape(value)}'`;
     }
     return this
   }
 
   whereNotNull(key) {
-    if (this.getQueryString.includes("where")) {
-      this.whereNotNullCondition = `and ${key} is not null`;
+    if (this.#queryBuilder.getQueryString.includes("where")) {
+      this.#queryBuilder.whereNotNullCondition = `and ${key} is not null`;
     } else {
-      this.whereNotNullCondition = `where ${key} is not null`;
+      this.#queryBuilder.whereNotNullCondition = `where ${key} is not null`;
     }
     return this
   }
 
   whereNull(key) {
-    if (this.getQueryString.includes("where")) {
-      this.whereNullCondition = `and ${key} is null`;
+    if (this.#queryBuilder.getQueryString.includes("where")) {
+      this.#queryBuilder.whereNullCondition = `and ${key} is null`;
     } else {
-      this.whereNullCondition = `where ${key} is null`;
+      this.#queryBuilder.whereNullCondition = `where ${key} is null`;
     }
     return this
   }
 
   whereIn(key, value) {
     if (typeof value === 'string') {
-      if (this.getQueryString.includes("where")) {
-        this.whereInCondition = `and ${key} in (${global.mysql.escape(value)})`;
+      if (this.#queryBuilder.getQueryString.includes("where")) {
+        this.#queryBuilder.whereInCondition = `and ${key} in (${mysql.escape(value)})`;
       } else {
-        this.whereInCondition = `where ${key} in (${global.mysql.escape(value)})`;
+        this.#queryBuilder.whereInCondition = `where ${key} in (${mysql.escape(value)})`;
       }
     } else if (typeof value === 'object' && value.length) {
-      this.whereCondition = `where ${key} in (${value.join()})`
+      this.#queryBuilder.whereCondition = `where ${key} in (${value.join()})`
     } else {
       var err = new Error('Type must be comma separate string or array')
       global.next(err)
@@ -66,38 +68,38 @@ module.exports = class Model extends QueryBuilder {
   }
 
   whereBetween(key, value) {
-    if (this.getQueryString.includes("where")) {
-      this.whereBetweenCondition = `and ${key} between '${global.mysql.escape(value[0])}' and '${global.mysql.escape(value[1])}'`;
+    if (this.#queryBuilder.getQueryString.includes("where")) {
+      this.#queryBuilder.whereBetweenCondition = `and ${key} between '${mysql.escape(value[0])}' and '${mysql.escape(value[1])}'`;
     } else {
-      this.whereBetweenCondition = `where ${key} between '${global.mysql.escape(value[0])}' and '${global.mysql.escape(value[1])}'`;
+      this.#queryBuilder.whereBetweenCondition = `where ${key} between '${mysql.escape(value[0])}' and '${mysql.escape(value[1])}'`;
     }
     return this
   }
 
   groupBy(key) {
-    this.groupByCondition = ` group by ${global.mysql.escape(key)}`;
+    this.#queryBuilder.groupByCondition = ` group by ${mysql.escape(key)}`;
     return this
   }
 
   orderBy(key, type) {
-    this.orderByCondition = ` order by ${global.mysql.escape(key)} ${global.mysql.escape(type)}`;
+    this.#queryBuilder.orderByCondition = ` order by ${mysql.escape(key)} ${mysql.escape(type)}`;
     return this
   }
 
   limit(value) {
-    this.limitCondition = ` limit ${global.mysql.escape(value)}`
+    this.#queryBuilder.limitCondition = ` limit ${mysql.escape(value)}`
     return this
   }
 
   offset(value) {
-    this.offsetCondition = ` offset ${global.mysql.escape(value)}`
+    this.#queryBuilder.offsetCondition = ` offset ${mysql.escape(value)}`
     return this
   }
 
   async count() {
     try {
-      var queryString = `${this.selectPrepend} ${this.getQueryString}`
-      this._writeLog(queryString)
+      var queryString = `${this.#queryBuilder.selectPrepend} ${this.#queryBuilder.getQueryString}`
+      this.#writeLog(queryString)
       var data = await sqlResult(queryString);
       return data.length
     } catch (err) {
@@ -107,8 +109,8 @@ module.exports = class Model extends QueryBuilder {
 
   async all() {
     try {
-      var queryString = `${this.selectPrepend} ${this.getQueryString}`
-      this._writeLog(queryString)
+      var queryString = `${this.#queryBuilder.selectPrepend} ${this.#queryBuilder.getQueryString}`
+      this.#writeLog(queryString)
       var data = await sqlResult(queryString)
       return data;
     } catch (err) {
@@ -118,8 +120,8 @@ module.exports = class Model extends QueryBuilder {
 
   async get() {
     try {
-      var queryString = `${this.selectPrepend} ${this.getQueryString}`
-      this._writeLog(queryString)
+      var queryString = `${this.#queryBuilder.selectPrepend} ${this.#queryBuilder.getQueryString}`
+      this.#writeLog(queryString)
       var data = await sqlResult(queryString)
       return data;
     } catch (err) {
@@ -129,8 +131,8 @@ module.exports = class Model extends QueryBuilder {
 
   async first() {
     try {
-      var queryString = `${this.selectPrepend} ${this.getQueryString}`
-      this._writeLog(queryString)
+      var queryString = `${this.#queryBuilder.selectPrepend} ${this.#queryBuilder.getQueryString}`
+      this.#writeLog(queryString)
       var data = await sqlResult(queryString);
       return data.length ? data[0] : null
     } catch (err) {
@@ -140,9 +142,9 @@ module.exports = class Model extends QueryBuilder {
 
   async pluck(key) {
     try {
-      this.pluckValue = `${key}`
-      var queryString = this.getQueryString
-      this._writeLog(queryString)
+      this.#queryBuilder.pluckValue = `${key}`
+      var queryString = this.#queryBuilder.getQueryString
+      this.#writeLog(queryString)
       var data = await sqlResult(queryString)
       var pluckResult = [];
       pluckResult = await data.map(element => {
@@ -157,7 +159,7 @@ module.exports = class Model extends QueryBuilder {
   async create(data) {
     try {
       var keys = Object.keys(data)
-      var query = `insert into ${this.schemaName} (`
+      var query = `insert into ${this.#queryBuilder.schemaName} (`
       keys.forEach((key, index) => {
         if (index === (keys.length - 1)) {
           query += ` ${key}) values (`
@@ -180,7 +182,7 @@ module.exports = class Model extends QueryBuilder {
           }
         }
       })
-      this._writeLog(query)
+      this.#writeLog(query)
       await sqlResult(query)
       return data;
     } catch (err) {
@@ -195,7 +197,7 @@ module.exports = class Model extends QueryBuilder {
     }
     try {
       var keys = Object.keys(datas[0])
-      var query = `insert into ${this.schemaName} (`
+      var query = `insert into ${this.#queryBuilder.schemaName} (`
       keys.forEach((key, index) => {
         if (index === (keys.length - 1)) {
           query += ` ${key}) values (`
@@ -223,7 +225,7 @@ module.exports = class Model extends QueryBuilder {
           query += `, (`
         }
       })
-      this._writeLog(query)
+      this.#writeLog(query)
       await sqlResult(query)
       return datas;
     } catch (err) {
@@ -237,23 +239,23 @@ module.exports = class Model extends QueryBuilder {
       await keys.forEach((key, index) => {
         if (index === (keys.length - 1)) {
           if (typeof data[key] === 'string') {
-            this.updateQuery = `${key} = '${data[key]}'`
+            this.#queryBuilder.updateQuery = `${key} = '${data[key]}'`
           } else {
-            this.updateQuery = `${key} = ${data[key]} `
+            this.#queryBuilder.updateQuery = `${key} = ${data[key]} `
           }
         } else {
           if (typeof data[key] === 'string') {
-            this.updateQuery = `${key} = '${data[key]}',`
+            this.#queryBuilder.updateQuery = `${key} = '${data[key]}',`
           } else {
-            this.updateQuery = `${key} = ${data[key]}, `
+            this.#queryBuilder.updateQuery = `${key} = ${data[key]}, `
           }
         }
       })
       if (data.id) {
         this.where('id', '=', data.id)
       }
-      var updateQuery = `${this.updatePrepend} ${this.updateQueryString} ${this.getQueryString}`
-      this._writeLog(updateQuery)
+      var updateQuery = `${this.#queryBuilder.updatePrepend} ${this.#queryBuilder.updateQueryString} ${this.#queryBuilder.getQueryString}`
+      this.#writeLog(updateQuery)
       await sqlResult(updateQuery)
     } catch (err) {
       global.next(err)
@@ -270,7 +272,7 @@ module.exports = class Model extends QueryBuilder {
         await skeys.forEach((key) => {
           this.where(key, '=', sData[key])
         })
-        existedData = await this.first()
+        existedData = await this.#queryBuilder.first()
       } else {
         var err = new Error('Data type must be object');
         global.next(err)
@@ -280,15 +282,15 @@ module.exports = class Model extends QueryBuilder {
         await eKeys.forEach((key, index) => {
           if (index === (eKeys.length - 1)) {
             if (typeof eData[key] === 'string') {
-              this.updateQuery = `${key} = '${eData[key]}'`
+              this.#queryBuilder.updateQuery = `${key} = '${eData[key]}'`
             } else {
-              this.updateQuery = `${key} = ${eData[key]} `
+              this.#queryBuilder.updateQuery = `${key} = ${eData[key]} `
             }
           } else {
             if (typeof eData[key] === 'string') {
-              this.updateQuery = `${key} = '${eData[key]}',`
+              this.#queryBuilder.updateQuery = `${key} = '${eData[key]}',`
             } else {
-              this.updateQuery = `${key} = ${eData[key]}, `
+              this.#queryBuilder.updateQuery = `${key} = ${eData[key]}, `
             }
           }
         })
@@ -296,8 +298,8 @@ module.exports = class Model extends QueryBuilder {
           this.where(key, '=', sData[key], 1)
         })
 
-        var updateQuery = `${this.updatePrepend} ${this.updateQueryString} ${this.getQueryString}`
-        this._writeLog(updateQuery)
+        var updateQuery = `${this.#queryBuilder.updatePrepend} ${this.#queryBuilder.updateQueryString} ${this.#queryBuilder.getQueryString}`
+        this.#writeLog(updateQuery)
         await sqlResult(updateQuery);
       } else {
         this.create(eData)
@@ -313,9 +315,9 @@ module.exports = class Model extends QueryBuilder {
       if ((typeof data === 'object') && !data.length) {
         var keys = Object.keys(data)
         await keys.forEach((key) => {
-          this.where(key, '=', data[key])
+          this.#queryBuilder.where(key, '=', data[key])
         })
-        existedData = await this.first()
+        existedData = await this.#queryBuilder.first()
       } else {
         var err = new Error('Data type must be object');
         global.next(err)
@@ -330,7 +332,7 @@ module.exports = class Model extends QueryBuilder {
     }
   }
 
-  _writeLog(query) {
+  #writeLog(query) {
     if (process.env.QUERY_LOG) {
       Log.info(`SQL Query ===> ${query}`)
     }

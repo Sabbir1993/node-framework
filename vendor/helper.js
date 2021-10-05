@@ -94,11 +94,11 @@ exports.sqlResultForMigration = (query) => {
   return new Promise((resolve, reject) => {
     mysqli.query(query, function (error, results, fields) {
       if (error) {
-        mysqli.end();
         reject(error);
+        // mysqli.end();
       }
-      mysqli.end();
       resolve(results);
+      // mysqli.end();
     });
   });
 };

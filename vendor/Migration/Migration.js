@@ -1,102 +1,104 @@
 const SchemaBluePrint = require ("./SchemaBluePrint")
 
-module.exports = class Migration extends SchemaBluePrint{
+module.exports = class Migration{
+    #schemaBluePrint
     constructor(schemaName){
-        super(schemaName)
+        this.#schemaBluePrint = new SchemaBluePrint(schemaName)
     }
 
     id(){
-        this.query = `id bigint unsigned NOT NULL AUTO_INCREMENT, PRIMARY KEY (id)`
-        this.lastColumn = 'id'
+        this.#schemaBluePrint.query = `id bigint unsigned NOT NULL AUTO_INCREMENT, PRIMARY KEY (id)`
+        this.#schemaBluePrint.lastColumn = 'id'
         return this
     }
 
     string(key, size){
-        if(this.lastColumn){
-            this.query =`${key} varchar(${size})`
+        if(this.#schemaBluePrint.lastColumn){
+            this.#schemaBluePrint.query =`${key} varchar(${size})`
         } else {
-            this.query =`,${key} varchar(${size})`
+            this.#schemaBluePrint.query =`,${key} varchar(${size})`
         }
-        this.lastColumn = key
+        this.#schemaBluePrint.lastColumn = key
         return this
     }
 
     number(key, size = null){
-        if(this.lastColumn){
-            this.query =`${key} int${size ? '('+size+')' : ''}`
+        if(this.#schemaBluePrint.lastColumn){
+            this.#schemaBluePrint.query =`${key} int${size ? '('+size+')' : ''}`
         } else {
-            this.query =`,${key} int${size ? '('+size+')' : ''}`
+            this.#schemaBluePrint.query =`,${key} int${size ? '('+size+')' : ''}`
         }
-        this.lastColumn = key
+        this.#schemaBluePrint.lastColumn = key
         return this
     }
 
     bigInt(key, size = null){
-        if(this.lastColumn){
-            this.query =`${key} bigint${size ? '('+size+')' : ''}`
+        if(this.#schemaBluePrint.lastColumn){
+            this.#schemaBluePrint.query =`${key} bigint${size ? '('+size+')' : ''}`
         } else {
-            this.query =`,${key} bigint${size ? '('+size+')' : ''}`
+            this.#schemaBluePrint.query =`,${key} bigint${size ? '('+size+')' : ''}`
         }
-        this.lastColumn = key
+        this.#schemaBluePrint.lastColumn = key
         return this
     }
 
     tinyInt(key, size = null){
-        if(this.lastColumn){
-            this.query =`${key} tinyint${size ? '('+size+')' : ''}`
+        if(this.#schemaBluePrint.lastColumn){
+            this.#schemaBluePrint.query =`${key} tinyint${size ? '('+size+')' : ''}`
         } else {
-            this.query =`,${key} tinyint${size ? '('+size+')' : ''}`
+            this.#schemaBluePrint.query =`,${key} tinyint${size ? '('+size+')' : ''}`
         }
-        this.lastColumn = key
+        this.#schemaBluePrint.lastColumn = key
         return this
     }
 
     timestamp(){
-        this.query = ` timestamp`
+        this.#schemaBluePrint.query = ` timestamp`
         return this
     }
 
     unique(key = null){
         if(key){
-            this.queryOptions = `, UNIQUE KEY ${this.schemaName}_${key}_unique (${key})`
+            this.#schemaBluePrint.queryOptions = `, UNIQUE KEY ${this.schemaName}_${key}_unique (${key})`
         } else {
-            this.queryOptions = `, UNIQUE KEY ${this.schemaName}_${this.lastColumnName}_unique (${this.lastColumnName})`
+            this.#schemaBluePrint.queryOptions = `, UNIQUE KEY ${this.schemaName}_${this.#schemaBluePrint.lastColumnName}_unique (${this.#schemaBluePrint.lastColumnName})`
         }
         return this
     }
 
     autoIncrement(){
-        this.query = ` AUTO_INCREMENT`
+        this.#schemaBluePrint.query = ` AUTO_INCREMENT`
         return this
     }
 
     default(value){
-        this.query = ` DEFAULT '${value}'`
+        this.#schemaBluePrint.query = ` DEFAULT '${value}'`
         return this
     }
 
     nullable(){
-        this.query = ` DEFAULT NULL`
+        this.#schemaBluePrint.query = ` DEFAULT NULL`
         return this
     }
 
     notnull(){
-        this.query = ` NOT NULL`
+        this.#schemaBluePrint.query = ` NOT NULL`
         return this
     }
 
     primarykey(key){
-        this.queryOptions = `, PRIMARY KEY (${key})`
+        this.#schemaBluePrint.queryOptions = `, PRIMARY KEY (${key})`
         return this
     }
 
     end(){
-        var finalQuery = this.querySting
-        if(!this.querySting.includes('PRIMARY KEY')){
+        var finalQuery = this.#schemaBluePrint.querySting
+        if(!this.#schemaBluePrint.querySting.includes('PRIMARY KEY')){
             finalQuery += `, PRIMARY KEY (${this._lastColumn})) AUTO_INCREMENT=1`
         } else {
             finalQuery += `) AUTO_INCREMENT=1`
         }
+        console.log(finalQuery);
         return finalQuery
     }
 }
