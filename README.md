@@ -316,7 +316,7 @@ node express make:migrationModel User
 for run migration run 
 
 ```shell script
-node express make:migrate
+node express migrate
 ```
 this will exwcute all the files inside migration folder and create all the tables respective files.
 
