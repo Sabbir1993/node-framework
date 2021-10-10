@@ -54,12 +54,16 @@ module.exports = class Model {
   whereIn(key, value) {
     if (typeof value === 'string') {
       if (this.#queryBuilder.getQueryString.includes("where")) {
-        this.#queryBuilder.whereInCondition = `and ${key} in (${mysql.escape(value)})`;
+        this.#queryBuilder.whereInCondition = `and ${key} in (${value})`;
       } else {
-        this.#queryBuilder.whereInCondition = `where ${key} in (${mysql.escape(value)})`;
+        this.#queryBuilder.whereInCondition = `where ${key} in (${value})`;
       }
     } else if (typeof value === 'object' && value.length) {
-      this.#queryBuilder.whereCondition = `where ${key} in (${value.join()})`
+      if (this.#queryBuilder.getQueryString.includes("where")) {
+        this.#queryBuilder.whereCondition = `and ${key} in ('${value.join("','")}')`
+      } else {
+        this.#queryBuilder.whereCondition = `where ${key} in ('${value.join("','")}')`
+      }
     } else {
       var err = new Error('Type must be comma separate string or array')
       global.next(err)
