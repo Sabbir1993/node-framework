@@ -60,9 +60,29 @@ module.exports = class Model {
       }
     } else if (typeof value === 'object' && value.length) {
       if (this.#queryBuilder.getQueryString.includes("where")) {
-        this.#queryBuilder.whereCondition = `and ${key} in ('${value.join("','")}')`
+        this.#queryBuilder.whereInCondition = `and ${key} in ('${value.join("','")}')`
       } else {
-        this.#queryBuilder.whereCondition = `where ${key} in ('${value.join("','")}')`
+        this.#queryBuilder.whereInCondition = `where ${key} in ('${value.join("','")}')`
+      }
+    } else {
+      var err = new Error('Type must be comma separate string or array')
+      global.next(err)
+    }
+    return this
+  }
+
+  whereNotIn(key, value) {
+    if (typeof value === 'string') {
+      if (this.#queryBuilder.getQueryString.includes("where")) {
+        this.#queryBuilder.whereNotInCondition = `and ${key} not in (${value})`;
+      } else {
+        this.#queryBuilder.whereNotInCondition = `where ${key} not in (${value})`;
+      }
+    } else if (typeof value === 'object' && value.length) {
+      if (this.#queryBuilder.getQueryString.includes("where")) {
+        this.#queryBuilder.whereNotInCondition = `and ${key} not in ('${value.join("','")}')`
+      } else {
+        this.#queryBuilder.whereNotInCondition = `where ${key} not in ('${value.join("','")}')`
       }
     } else {
       var err = new Error('Type must be comma separate string or array')

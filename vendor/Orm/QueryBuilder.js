@@ -39,6 +39,10 @@ module.exports = class QueryBuilder {
     this._query = `${this._query} ${query}`
   }
 
+  set whereNotInCondition(query){
+    this._query = `${this._query} ${query}`
+  }
+
   set groupByCondition(query){
     this._query = `${this._query} ${query}`
   }
