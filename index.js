@@ -1,12 +1,14 @@
 require("dotenv").config();
 var express = require("express");
-var { ErrorHandle } = require("./vendor/ErrorHandler");
+const { ErrorHandle } = require("./vendor/ErrorHandler");
 const fileUpload = require("express-fileupload");
-var SystemHelper = require("./vendor/SystemHelper");
+const SystemHelper = require("./vendor/SystemHelper");
+const Grapsql = require('./vendor/Graphql/graphhql')
 // define app
 var app = express();
 
 new SystemHelper(app, express);
+new Grapsql(app)
 
 app.use(fileUpload());
 

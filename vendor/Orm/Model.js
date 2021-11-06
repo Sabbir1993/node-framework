@@ -5,7 +5,6 @@ const mysql = require('mysql')
 module.exports = class Model {
   #queryBuilder
   constructor(tableName) {
-    // super(tableName)
     this.#queryBuilder = new QueryBuilder(tableName)
   }
 
@@ -58,7 +57,7 @@ module.exports = class Model {
       } else {
         this.#queryBuilder.whereInCondition = `where ${key} in (${value})`;
       }
-    } else if (typeof value === 'object' && value.length) {
+    } else if (Array.isArray(value)) {
       if (this.#queryBuilder.getQueryString.includes("where")) {
         this.#queryBuilder.whereInCondition = `and ${key} in ('${value.join("','")}')`
       } else {
@@ -78,7 +77,7 @@ module.exports = class Model {
       } else {
         this.#queryBuilder.whereNotInCondition = `where ${key} not in (${value})`;
       }
-    } else if (typeof value === 'object' && value.length) {
+    } else if (Array.isArray(value)) {
       if (this.#queryBuilder.getQueryString.includes("where")) {
         this.#queryBuilder.whereNotInCondition = `and ${key} not in ('${value.join("','")}')`
       } else {
@@ -120,6 +119,11 @@ module.exports = class Model {
     return this
   }
 
+  query(){
+    var queryString = `${this.#queryBuilder.selectPrepend} ${this.#queryBuilder.getQueryString}`
+    return queryString
+  }
+
   async count() {
     try {
       var queryString = `${this.#queryBuilder.selectPrepend} ${this.#queryBuilder.getQueryString}`
@@ -158,6 +162,18 @@ module.exports = class Model {
       var queryString = `${this.#queryBuilder.selectPrepend} ${this.#queryBuilder.getQueryString}`
       this.#writeLog(queryString)
       var data = await sqlResult(queryString);
+      return data.length ? data[0] : null
+    } catch (err) {
+      global.next(err)
+    }
+  }
+
+  async find(id) {
+    try {
+      var queryString = `${this.#queryBuilder.selectPrepend} where id = ${id}`
+      this.#writeLog(queryString)
+      var data = await sqlResult(queryString);
+      console.log(data)
       return data.length ? data[0] : null
     } catch (err) {
       global.next(err)
