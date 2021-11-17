@@ -173,7 +173,6 @@ module.exports = class Model {
       var queryString = `${this.#queryBuilder.selectPrepend} where id = ${id}`
       this.#writeLog(queryString)
       var data = await sqlResult(queryString);
-      console.log(data)
       return data.length ? data[0] : null
     } catch (err) {
       global.next(err)

@@ -1,9 +1,6 @@
-let User = require('../models/User')
-
 class TestController {
     static index = async (req, res) => {
-        let users = await new User().all()
-        res.send(users)
+
     }
 
     static create = async (req, res) => {
