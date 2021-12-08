@@ -126,10 +126,9 @@ module.exports = class Model {
 
   async count(key = null) {
     try {
-      this.#queryBuilder.count = key
-      var queryString = `${this.#queryBuilder.selectPrepend} ${this.#queryBuilder.getQueryString}`
+      var queryString = `select ${key ? 'count('+key+')' : 'count(*)' } as agg_count_from_db from ${this.#queryBuilder.schemaName} ${this.#queryBuilder.getQueryString}`
       var data = await sqlResult(queryString);
-      return data.length
+      return data[0].agg_count_from_db
     } catch (err) {
       global.next(err)
     }
@@ -353,6 +352,7 @@ module.exports = class Model {
         this.create(eData)
       }
     } catch (err) {
+      Log.debug(`Error Query On update or create ===> ${this.#queryBuilder.updatePrepend} ${this.#queryBuilder.updateQueryString} ${this.#queryBuilder.getQueryString}`)
       global.next(err)
     }
   }
