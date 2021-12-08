@@ -74,15 +74,23 @@ exports.catchErrorAndReturn = (req, res, next) => {
 };
 
 exports.sqlResult = (query) => {
-  var mysqli = mysql.createConnection(database.mysql);
-  mysqli.connect();
+  if(global.mysql.state === 'disconnected'){
+    global.mysql = mysql.createConnection(database.mysql);
+    global.mysql.connect(function(err) {
+      if (err) {
+        global.next(err)
+      }
+      Log.debug('connected as id ' + global.mysql.threadId)
+    });
+  }
   return new Promise((resolve, reject) => {
-    mysqli.query(query, function (error, results, fields) {
+    global.mysql.query(query, function (error, results, fields) {
+      if (process.env.QUERY_LOG) {
+        Log.info(`SQL Query ===> ${query}`)
+      }
       if (error) {
-        mysqli.end();
         reject(error);
       }
-      mysqli.end();
       resolve(results);
     });
   });
