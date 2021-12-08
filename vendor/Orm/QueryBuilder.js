@@ -11,6 +11,10 @@ module.exports = class QueryBuilder {
     this._selectPrepend = this._selectPrepend.replace('*', query)
   }
 
+  set count(key){
+    this._selectPrepend = this._selectPrepend.replace(`*`, key ? `count(${key})` : `count(*)` )
+  }
+
   set leftJoinCondition(query){
     this._query = `${this._query} ${query}`
   }
@@ -20,7 +24,7 @@ module.exports = class QueryBuilder {
   }
 
   set whereCondition(query){
-      this._query = `${this._query} ${query}` 
+    this._query = `${this._query} ${query}`
   }
 
   set whereNotNullCondition(query){
@@ -67,7 +71,7 @@ module.exports = class QueryBuilder {
   set updateQuery(query){
     this._updateQuery +=  query
   }
-  
+
   get getQueryString(){
     return this._query
   }
@@ -79,7 +83,7 @@ module.exports = class QueryBuilder {
   get updateQueryString(){
     return this._updateQuery
   }
-  
+
   get selectPrepend(){
     return this._selectPrepend
   }

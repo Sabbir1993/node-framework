@@ -1,4 +1,4 @@
-const { sqlResult } = require("../Helper");
+const { sqlResult } = require("../helper");
 const Log = require("../Log");
 const QueryBuilder = require("./QueryBuilder");
 const mysql = require('mysql')
@@ -25,9 +25,9 @@ module.exports = class Model {
 
   where(key, type, value) {
     if (this.#queryBuilder.getQueryString.includes("where")) {
-      this.#queryBuilder.whereCondition = `and ${key} ${type} '${mysql.escape(value)}'`;
+      this.#queryBuilder.whereCondition = `and ${key} ${type} ${mysql.escape(value)}`;
     } else {
-      this.#queryBuilder.whereCondition = `where ${key} ${type} '${mysql.escape(value)}'`;
+      this.#queryBuilder.whereCondition = `where ${key} ${type} ${mysql.escape(value)}`;
     }
     return this
   }
@@ -92,9 +92,9 @@ module.exports = class Model {
 
   whereBetween(key, value) {
     if (this.#queryBuilder.getQueryString.includes("where")) {
-      this.#queryBuilder.whereBetweenCondition = `and ${key} between '${mysql.escape(value[0])}' and '${mysql.escape(value[1])}'`;
+      this.#queryBuilder.whereBetweenCondition = `and ${key} between ${mysql.escape(value[0])} and ${mysql.escape(value[1])}`;
     } else {
-      this.#queryBuilder.whereBetweenCondition = `where ${key} between '${mysql.escape(value[0])}' and '${mysql.escape(value[1])}'`;
+      this.#queryBuilder.whereBetweenCondition = `where ${key} between ${mysql.escape(value[0])} and ${mysql.escape(value[1])}`;
     }
     return this
   }
@@ -104,8 +104,8 @@ module.exports = class Model {
     return this
   }
 
-  orderBy(key, type) {
-    this.#queryBuilder.orderByCondition = ` order by ${key} ${mysql.escape(type)}`;
+  orderBy(key) {
+    this.#queryBuilder.orderByCondition = ` order by ${key}`;
     return this
   }
 
@@ -124,10 +124,10 @@ module.exports = class Model {
     return queryString
   }
 
-  async count() {
+  async count(key = null) {
     try {
+      this.#queryBuilder.count = key
       var queryString = `${this.#queryBuilder.selectPrepend} ${this.#queryBuilder.getQueryString}`
-      this.#writeLog(queryString)
       var data = await sqlResult(queryString);
       return data.length
     } catch (err) {
@@ -138,7 +138,6 @@ module.exports = class Model {
   async all() {
     try {
       var queryString = `${this.#queryBuilder.selectPrepend} ${this.#queryBuilder.getQueryString}`
-      this.#writeLog(queryString)
       var data = await sqlResult(queryString)
       return data;
     } catch (err) {
@@ -149,8 +148,24 @@ module.exports = class Model {
   async get() {
     try {
       var queryString = `${this.#queryBuilder.selectPrepend} ${this.#queryBuilder.getQueryString}`
-      this.#writeLog(queryString)
       var data = await sqlResult(queryString)
+      return data;
+    } catch (err) {
+      global.next(err)
+    }
+  }
+
+  async paginate(value) {
+    var {page} = global?.req?.query
+    page === undefined ? page = 1 : null
+    try {
+      var data = {}
+      data.totalitems = await this.count()
+      data.pages = Math.ceil(data.totalitems / value)
+      data.currentPage = page
+      data.perpage = value
+      var queryString = `${this.#queryBuilder.selectPrepend} ${this.#queryBuilder.getQueryString} limit ${(page*value) - value}, ${value}`
+      data.items = await sqlResult(queryString)
       return data;
     } catch (err) {
       global.next(err)
@@ -160,7 +175,6 @@ module.exports = class Model {
   async first() {
     try {
       var queryString = `${this.#queryBuilder.selectPrepend} ${this.#queryBuilder.getQueryString}`
-      this.#writeLog(queryString)
       var data = await sqlResult(queryString);
       return data.length ? data[0] : null
     } catch (err) {
@@ -171,7 +185,6 @@ module.exports = class Model {
   async find(id) {
     try {
       var queryString = `${this.#queryBuilder.selectPrepend} where id = ${id}`
-      this.#writeLog(queryString)
       var data = await sqlResult(queryString);
       return data.length ? data[0] : null
     } catch (err) {
@@ -183,7 +196,6 @@ module.exports = class Model {
     try {
       this.#queryBuilder.pluckValue = `${key}`
       var queryString = this.#queryBuilder.getQueryString
-      this.#writeLog(queryString)
       var data = await sqlResult(queryString)
       var pluckResult = [];
       pluckResult = await data.map(element => {
@@ -201,30 +213,30 @@ module.exports = class Model {
       var query = `insert into ${this.#queryBuilder.schemaName} (`
       keys.forEach((key, index) => {
         if (index === (keys.length - 1)) {
-          query += ` ${key}) values (`
+          query += ` ${'`'+key+'`'}) values (`
         } else {
-          query += `${key}, `
+          query += `${'`'+key+'`'}, `
         }
       })
       keys.forEach((key, index) => {
         if (index === (keys.length - 1)) {
           if (typeof data[key] === 'string') {
-            query += `'${data[key]}')`
+            query += `${data[key] ? mysql.escape(data[key]) : null})`
           } else {
-            query += `${data[key]})`
+            query += `${data[key] ? data[key] : null})`
           }
         } else {
           if (typeof data[key] === 'string') {
-            query += `'${data[key]}', `
+            query += `${ data[key] ? mysql.escape(data[key]) : null}, `
           } else {
-            query += `${data[key]}, `
+            query += `${ data[key] ? data[key] : null }, `
           }
         }
       })
-      this.#writeLog(query)
       await sqlResult(query)
       return data;
     } catch (err) {
+      Log.debug(`Error Query On create ===> ${query}`)
       return global.next(err)
     }
   }
@@ -239,22 +251,22 @@ module.exports = class Model {
       var query = `insert into ${this.#queryBuilder.schemaName} (`
       keys.forEach((key, index) => {
         if (index === (keys.length - 1)) {
-          query += ` ${key}) values (`
+          query += ` ${'`'+key+'`'}) values (`
         } else {
-          query += `${key}, `
+          query += `${'`'+key+'`'}, `
         }
       })
       datas.forEach(async (data, index1) => {
         keys.forEach((key, index) => {
           if (index === (keys.length - 1)) {
             if (typeof data[key] === 'string') {
-              query += `'${data[key]}')`
+              query += `${mysql.escape(data[key])})`
             } else {
               query += `${data[key]})`
             }
           } else {
             if (typeof data[key] === 'string') {
-              query += `'${data[key]}', `
+              query += `${mysql.escape(data[key])}, `
             } else {
               query += `${data[key]}, `
             }
@@ -264,7 +276,6 @@ module.exports = class Model {
           query += `, (`
         }
       })
-      this.#writeLog(query)
       await sqlResult(query)
       return datas;
     } catch (err) {
@@ -278,15 +289,15 @@ module.exports = class Model {
       await keys.forEach((key, index) => {
         if (index === (keys.length - 1)) {
           if (typeof data[key] === 'string') {
-            this.#queryBuilder.updateQuery = `${key} = '${data[key]}'`
+            this.#queryBuilder.updateQuery = `${'`'+key+'`'} = ${ data[key] ? mysql.escape(data[key]) : null }`
           } else {
-            this.#queryBuilder.updateQuery = `${key} = ${data[key]} `
+            this.#queryBuilder.updateQuery = `${'`'+key+'`'} = ${ data[key] ? data[key] : null} `
           }
         } else {
           if (typeof data[key] === 'string') {
-            this.#queryBuilder.updateQuery = `${key} = '${data[key]}',`
+            this.#queryBuilder.updateQuery = `${'`'+key+'`'} = ${ data[key] ? mysql.escape(data[key]) : null },`
           } else {
-            this.#queryBuilder.updateQuery = `${key} = ${data[key]}, `
+            this.#queryBuilder.updateQuery = `${'`'+key+'`'} = ${ data[key] ? data[key] : null }, `
           }
         }
       })
@@ -294,7 +305,6 @@ module.exports = class Model {
         this.where('id', '=', data.id)
       }
       var updateQuery = `${this.#queryBuilder.updatePrepend} ${this.#queryBuilder.updateQueryString} ${this.#queryBuilder.getQueryString}`
-      this.#writeLog(updateQuery)
       await sqlResult(updateQuery)
     } catch (err) {
       global.next(err)
@@ -309,9 +319,9 @@ module.exports = class Model {
       if ((typeof sData === 'object') && !sData.length) {
         skeys = Object.keys(sData)
         await skeys.forEach((key) => {
-          this.where(key, '=', sData[key])
+          this.where(key, '=', sData[key].replace("'", ''))
         })
-        existedData = await this.#queryBuilder.first()
+        existedData = await this.first()
       } else {
         var err = new Error('Data type must be object');
         global.next(err)
@@ -321,24 +331,23 @@ module.exports = class Model {
         await eKeys.forEach((key, index) => {
           if (index === (eKeys.length - 1)) {
             if (typeof eData[key] === 'string') {
-              this.#queryBuilder.updateQuery = `${key} = '${eData[key]}'`
+              this.#queryBuilder.updateQuery = `${'`'+key+'`'} = ${mysql.escape(eData[key])}`
             } else {
-              this.#queryBuilder.updateQuery = `${key} = ${eData[key]} `
+              this.#queryBuilder.updateQuery = `${'`'+key+'`'} = ${eData[key]} `
             }
           } else {
             if (typeof eData[key] === 'string') {
-              this.#queryBuilder.updateQuery = `${key} = '${eData[key]}',`
+              this.#queryBuilder.updateQuery = `${'`'+key+'`'} = ${mysql.escape(eData[key])},`
             } else {
-              this.#queryBuilder.updateQuery = `${key} = ${eData[key]}, `
+              this.#queryBuilder.updateQuery = `${'`'+key+'`'} = ${eData[key]}, `
             }
           }
         })
         await skeys.forEach((key) => {
-          this.where(key, '=', sData[key], 1)
+          this.where(key, '=', sData[key].replace("'", ''))
         })
 
         var updateQuery = `${this.#queryBuilder.updatePrepend} ${this.#queryBuilder.updateQueryString} ${this.#queryBuilder.getQueryString}`
-        this.#writeLog(updateQuery)
         await sqlResult(updateQuery);
       } else {
         this.create(eData)
@@ -368,12 +377,6 @@ module.exports = class Model {
       }
     } catch (err) {
       global.next(err)
-    }
-  }
-
-  #writeLog(query) {
-    if (process.env.QUERY_LOG) {
-      Log.info(`SQL Query ===> ${query}`)
     }
   }
 }
