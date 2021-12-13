@@ -128,7 +128,7 @@ module.exports = class Model {
     try {
       var queryString = `select ${key ? 'count('+key+')' : 'count(*)' } as agg_count_from_db from ${this.#queryBuilder.schemaName} ${this.#queryBuilder.getQueryString}`
       var data = await sqlResult(queryString);
-      return data[0].agg_count_from_db
+      return data[0] ? data[0].agg_count_from_db : 0
     } catch (err) {
       global.next(err)
     }
