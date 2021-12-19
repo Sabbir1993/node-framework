@@ -155,7 +155,7 @@ module.exports = class Model {
   }
 
   async paginate(value) {
-    var {page} = global?.req?.query
+    var {page} = global.req.query
     page === undefined ? page = 1 : null
     try {
       var data = {}
