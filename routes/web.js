@@ -10,5 +10,4 @@ router.get('/lang/:lang', (req, res, next) => {
    localStorage.set('lang',req.params.lang)
    return res.redirect('back')
 })
-
 module.exports = router

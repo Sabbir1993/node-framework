@@ -499,4 +499,12 @@ class UserController {
 }
 ```
 
+#### View Log in html
+    import log controller to your web.js and you can browse your log files
+```js
+//in web.js
+const LogController = require('../vendor/logging/LogController')
+router.get('/logs', LogController.index)
+```
+
 ## Hope you will enjoy this. Happy coding 

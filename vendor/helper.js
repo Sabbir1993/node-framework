@@ -1,6 +1,6 @@
 const User = require("../app/models/UserMongo");
 const { validationResult } = require("express-validator");
-const Log = require("./Log");
+const Log = require("./logging/Log");
 const { v4: uuidv4 } = require("uuid");
 const mysql = require("mysql");
 const database = require("../config/database");

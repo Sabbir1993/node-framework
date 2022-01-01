@@ -6,7 +6,7 @@ const mysql = require('mysql');
 const database = require('../config/database')
 const expressLayouts = require('express-ejs-layouts')
 var bodyParser = require('body-parser')
-const Log = require('./Log');
+const Log = require('./logging/Log');
 
 module.exports = class SystemHelper {
     constructor(app, express) {

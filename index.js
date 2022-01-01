@@ -22,10 +22,7 @@ app.use('/', web)
 app.use('/api', api)
 
 // GET 404 & send to error handler
-app.get("*", (req, res, next) => {
-    // ============== for api =================
-    // res.send(setResponse(null,'failed', 404, ['url not found']))
-    // ============== for view ================
+app.use((req, res, next) => {
     const err = new Error('Not Found')
     err.status = 404
     next(err)
@@ -40,7 +37,6 @@ app.use(fileUpload({
         fileSize: 50 * 1024 * 1024,
     },
 }));
-
 // define http server
 var port = (process.env.APP_PORT || 3000)
 app.listen(port,function (){
