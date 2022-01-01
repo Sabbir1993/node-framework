@@ -25,23 +25,23 @@ const UserSchema = new mongoose.Schema({
     }
 });
 
-const User = mongoose.model('User', UserSchema);
+const UserMongo = mongoose.model('User', UserSchema);
 
-module.exports = User;
+module.exports = UserMongo;
 
 // Find the user by Its username
 module.exports.findByUserName = function (username, callback) {
     const query = {
         name: username
     }
-    User.findOne(query, callback);
+    UserMongo.findOne(query, callback);
 }
 // Find the user by Its email
 module.exports.findByEmail = function (email, callback) {
     const query = {
         email: email
     }
-    User.findOne(query, callback);
+    UserMongo.findOne(query, callback);
 }
 // to Register the user
 module.exports.addUser = function (newUser, callback) {

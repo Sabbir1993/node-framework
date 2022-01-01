@@ -27,14 +27,13 @@ module.exports = class SystemHelper {
                 db.once('open', function (){})
             } else if (process.env.DB_DRIVER.toLowerCase() === 'mysql'){
                 global.mysql = mysql.createConnection(database.mysql);
-                global.mysql.connect();
             } else {
                 Log.error('Invalid DB Driver')
                 throw 'Invalid DB Driver'
             }
         }catch(error){
             Log.error(error.toString())
-            throw error
+            global.next(error)
         }
     }
 
@@ -96,6 +95,9 @@ module.exports = class SystemHelper {
         app.use(require('connect-flash')());
 
         app.use(async function (req, res, next) {
+            global.next = next
+            global.req = req
+            global.res = res
             var oldReqData = req.flash('oldData');
             var successMessage = req.flash('success');
             var errorMessage = req.flash('error');

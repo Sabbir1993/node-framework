@@ -1,33 +1,36 @@
-module.exports = class SchemaBluePrint{
-    constructor(schemaName){
-        this._schemaName = schemaName
-        this._lastColumn = null
-        this.funCount = 0
-        this._queryOptions = null
-        this._query = `CREATE TABLE ${this._schemaName} (`
+module.exports = class SchemaBluePrint {
+    #schemaName
+    #lastColumn
+    #queryOptions
+    #query
+    constructor(schemaName) {
+        this.#schemaName = schemaName
+        this.#lastColumn = 'null'
+        this.#queryOptions = ''
+        this.#query = `CREATE TABLE IF NOT EXISTS ${this.#schemaName} (`
     }
 
-    set query(query){
-        this._query += query 
+    set query(query) {
+        this.#query += query
     }
 
-    set queryOptions(query){
-        this._queryOptions += query
+    set queryOptions(query) {
+        this.#queryOptions += query
     }
 
-    set lastColumn(value){
-        this._lastColumn = value
+    set lastColumn(value) {
+        this.#lastColumn = value
     }
 
-    get querySting(){
-        return this._query += this._queryOptions
+    get querySting() {
+        return this.#query += this.#queryOptions
     }
 
-    get lastColumnName(){
-        return this._lastColumn
+    get lastColumnName() {
+        return this.#lastColumn
     }
 
-    get schemaName(){
-        return this._schemaName
+    get schemaName() {
+        return this.#schemaName
     }
 }

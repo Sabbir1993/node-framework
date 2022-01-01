@@ -74,10 +74,21 @@ exports.catchErrorAndReturn = (req, res, next) => {
 };
 
 exports.sqlResult = (query) => {
+  if(global.mysql.state === 'disconnected'){
+    global.mysql = mysql.createConnection(database.mysql);
+    global.mysql.connect(function(err) {
+      if (err) {
+        global.next(err)
+      }
+      Log.debug('connected as id ' + global.mysql.threadId)
+    });
+  }
   return new Promise((resolve, reject) => {
     global.mysql.query(query, function (error, results, fields) {
+      if (process.env.QUERY_LOG) {
+        Log.info(`SQL Query ===> ${query}`)
+      }
       if (error) {
-        console.error("Error sending action: ", error);
         reject(error);
       }
       resolve(results);
@@ -91,11 +102,11 @@ exports.sqlResultForMigration = (query) => {
   return new Promise((resolve, reject) => {
     mysqli.query(query, function (error, results, fields) {
       if (error) {
-        console.error("Error sending action: ", error);
         reject(error);
+        // mysqli.end();
       }
       resolve(results);
-      mysqli.end();
+      // mysqli.end();
     });
   });
 };
